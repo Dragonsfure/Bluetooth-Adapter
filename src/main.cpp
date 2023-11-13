@@ -1,11 +1,15 @@
 #include <Arduino.h>
 #include "BluetoothA2DPSink.h"
 
+/// @brief Field for the Bluetooth Stack.
 BluetoothA2DPSink a2dp_sink;
 
+//Area for Define Constants
 #define SKIPPIN 0
 #define PREVIOUSPIN 2
+#define PAUSEPIN 4
 
+/// @brief Setup for the Different IO-Ports and Communication.
 void setup()
 {   
     // Config for Adafuit / UDA1334A Breakout Board
@@ -26,24 +30,11 @@ void setup()
     a2dp_sink.start("BT-Sound-Adapter");
 
     // Pin Setup
-
     pinMode(SKIPPIN, INPUT);
     pinMode(PREVIOUSPIN, INPUT);
-
-/*  
-    DAC 	ESP32
-    VIN 	5V
-    GND 	GND
-    WSEL 	WS (GPIO25)
-    DIN 	OUT (GPIO22)
-    BCLK 	BCK (GPIO26)
-*/
 }
-/*
-    bck_io_num = 26
-    ws_io_num = 25
-    data_out_num = 22
-*/
+
+/// @brief Main-Loop to do the Magic.
 void loop()
 {
     if (digitalRead(SKIPPIN) == HIGH)
@@ -53,4 +44,8 @@ void loop()
     if (digitalRead(PREVIOUSPIN) == HIGH){
         a2dp_sink.previous();
     }
+    if (digitalRead(PAUSEPIN)== HIGH)
+    {
+        a2dp_sink.pause();
+    }    
 }
